@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { composeWithTracker } from 'react-komposer';
+import { withTracker } from 'meteor/react-meteor-data';
+
 import { Alert } from 'react-bootstrap';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Loading } from '../loading.js';
@@ -28,35 +30,35 @@ class UserDesigns extends React.Component {
 
   render() {
     return (<div>
-    {this.props.designs.length ?
-      <div>
-      {this.props.designs.map((design) =>
-        <div className="row" key={design._id} style={style.padding5}>
-          <div className="col-md-8">
-            <img src={design.design_url} className="img-responsive" />
-          </div>
-          <div className="col-md-4 text-center">
-            <LinkContainer to={`/me/designs/${design._id}/edit`}>
-              <button className="btn btn-primary">Edit</button>
-            </LinkContainer>
-            <button className="btn btn-primary"
-              onClick={this.handleDelete.bind(this, design._id)}>Delete</button>
-          </div>
+      {this.props.designs.length ?
+        <div>
+          {this.props.designs.map((design) =>
+            <div className="row" key={design._id} style={style.padding5}>
+              <div className="col-md-8">
+                <img src={design.design_url} className="img-responsive" />
+              </div>
+              <div className="col-md-4 text-center">
+                <LinkContainer to={`/me/designs/${design._id}/edit`}>
+                  <button className="btn btn-primary">Edit</button>
+                </LinkContainer>
+                <button className="btn btn-primary"
+                  onClick={this.handleDelete.bind(this, design._id)}>Delete</button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-      </div>
-    :
-      <Alert bsStyle="warning">No designs yet.</Alert>
-    }
+        :
+        <Alert bsStyle="warning">No designs yet.</Alert>
+      }
     </div>);
   }
 }
 
 UserDesigns.propTypes = {
-  designs: React.PropTypes.array,
+  designs: PropTypes.array,
 };
 
-export const composer = (props, onData) => {
+export default withTracker((props) => {
   const options = {
     limit: props.all ? 1000 : 5,
     sort: { createdAt: -1 },
@@ -65,12 +67,10 @@ export const composer = (props, onData) => {
   const filter = {
     userId: Meteor.userId(),
   };
+  
+  Meteor.subscribe('userDesigns', { filter, options });
 
-  const subscription = Meteor.subscribe('userDesigns', { filter, options });
-  if (subscription.ready()) {
-    const designs = Designs.find(filter, { sort: { createdAt: -1 } }).fetch();
-    onData(null, { designs });
-  }
-};
-
-export default composeWithTracker(composer, Loading)(UserDesigns);
+  return { 
+    designs: Designs.find(filter, { sort: { createdAt: -1 } }).fetch()
+  };
+})(UserDesigns);

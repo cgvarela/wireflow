@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { updateUserBillingInfo } from '../../../api/users/methods.js';
 import { Bert } from 'meteor/themeteorchef:bert';
 
@@ -25,7 +26,7 @@ export class BillingInfo extends React.Component {
       country: !theSameWithProfile ? billingInfo.country : user.profile.country || '',
       city: !theSameWithProfile ? billingInfo.city : user.profile.city || '',
       postal_code: !theSameWithProfile ? billingInfo.postal_code :
-                                       user.profile.postal_code || '',
+        user.profile.postal_code || '',
       cities,
       is_same_with_user: billingInfo.use_profile_address,
       edit: false,
@@ -167,7 +168,7 @@ export class BillingInfo extends React.Component {
           onChange={this.handleCountryChange.bind(this)}
           value={this.state.country}>
           <option value="">Select Country</option>
-          {Countries.map((country, index) => (<option key={index}
+          {Countries.map((country, index) => (<option key={country}
             value={country}>{country}</option>))}
         </select>
       </div>
@@ -178,7 +179,7 @@ export class BillingInfo extends React.Component {
           onChange={this.handleChange.bind(this)}
           value={this.state.city}>
           {this.state.cities.map((city, index) => (
-            <option key={index} value={city}>{city}</option>
+            <option key={city} value={city}>{city}</option>
           ))}
         </select>
       </div>
@@ -216,5 +217,5 @@ export class BillingInfo extends React.Component {
 }
 
 BillingInfo.propTypes = {
-  user: React.PropTypes.object,
+  user: PropTypes.object,
 };

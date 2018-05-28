@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { composeWithTracker } from 'react-komposer';
+import { withTracker } from 'meteor/react-meteor-data';
+
 import { LinkContainer } from 'react-router-bootstrap';
 import { Alert } from 'react-bootstrap';
 import { Loading } from '../../components/loading.js';
@@ -43,20 +45,20 @@ class AdminWires extends React.Component {
     });
   }
  
-wireOwner(id){
+  wireOwner(id){
 
     const subscription = Meteor.subscribe('userInfo',id);
-  if (subscription.ready()) {
-        let user=Meteor.users.findOne({_id:id});
-        if(user){
-                return user.profile.name.first+" "+user.profile.name.last;
+    if (subscription.ready()) {
+      let user=Meteor.users.findOne({_id:id});
+      if(user){
+        return user.profile.name.first+' '+user.profile.name.last;
 
-        }else{
-            return id;
-        }
-  }
+      }else{
+        return id;
+      }
+    }
       
-}
+  }
   render() {
     return (<div>
       {this.props.wires ?
@@ -66,7 +68,7 @@ wireOwner(id){
               <tr key={wire._id}>
                 <td><a href={`/wire/${wire._id}`} target="_blank">{wire.name}</a></td>
                 <td><a href={`/wire/${wire._id}`} target="_blank">{wire.description}</a></td>
-                <td>{wire.createdAt.toISOString().substring(0, 10).split("-").reverse().join("-")}</td>
+                <td>{wire.createdAt.toISOString().substring(0, 10).split('-').reverse().join('-')}</td>
                 <td>{this.wireOwner(wire.userId)}</td>
                 <td>
                   <button className="btn btn-danger"
@@ -76,7 +78,7 @@ wireOwner(id){
             )}
           </tbody>
         </table>
-      :
+        :
         <Alert bsStyle="warning">No wires yet.</Alert>
       }
     </div>);
@@ -84,16 +86,14 @@ wireOwner(id){
 }
 
 AdminWires.propTypes = {
-  wires: React.PropTypes.array,
-  limit: React.PropTypes.number,
+  wires: PropTypes.array,
+  limit: PropTypes.number,
 };
 
-const composer = (params, onData) => {
-  const subscription = Meteor.subscribe('wires');
-  if (subscription.ready()) {
-    const wires = Wires.find({}).fetch();
-    onData(null, { wires });
-  }
-};
+export default withTracker(() => {
+  Meteor.subscribe('wires');
 
-export default composeWithTracker(composer, Loading)(AdminWires);
+  return { 
+    wires: Wires.find({}).fetch()
+  };
+})(AdminWires);

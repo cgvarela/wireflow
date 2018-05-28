@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { Grid } from 'react-bootstrap';
@@ -51,46 +52,46 @@ export class Index extends React.Component {
   }
 
   render() {
-     if (!Meteor.user()) {
+    if (!Meteor.user()) {
       if (!Meteor._localStorage.getItem('wfg')) {
         Meteor._localStorage.setItem('wfg', `guest${Random.id(4)}`);
       }
     }
     return (<div>
-        <div className="row homeCont">
-            <div className="col-md-6 colImg">
-              <img src="/images/icons/homeImg.png"></img>
-            </div>
-            <div className="col-md-6 colTxt">
-              <h1>Easiest flowchart tool</h1>
-              <p>Wireflow is free online tool for creating beautiful wireframes & user flows. NO Photoshop skills required!</p>
-              <button className="white" onClick={this.createDesign.bind(this)}>
+      <div className="row homeCont">
+        <div className="col-md-6 colImg">
+          <img src="/images/icons/homeImg.png"></img>
+        </div>
+        <div className="col-md-6 colTxt">
+          <h1>Easiest flowchart tool</h1>
+          <p>Wireflow is free online tool for creating beautiful wireframes & user flows. NO Photoshop skills required!</p>
+          <button className="white" onClick={this.createDesign.bind(this)}>
                 Start Designing
-              </button>
-            </div>
+          </button>
         </div>
-        <div className="row homeContBottom">
+      </div>
+      <div className="row homeContBottom">
         <div className="col-md-4">
-        <img src="/images/icons/Optimnetwork.svg"></img>
-        <h3>Create beautiful flow charts</h3>
-        <p>Wireflow is free online tool for creating beautiful wireframes & user flows.</p>
-        </div>
-        <div className="col-md-4">
-        <img src="/images/icons/No.svg"></img>
-        <h3>No Photoshop skills required</h3>
-        <p>Very easy to use and you don't need any prior knowledge of Photoshop or any other software skills!</p>
+          <img src="/images/icons/Optimnetwork.svg"></img>
+          <h3>Create beautiful flow charts</h3>
+          <p>Wireflow is free online tool for creating beautiful wireframes & user flows.</p>
         </div>
         <div className="col-md-4">
-        <img src="/images/icons/Chat.svg"></img>
-        <h3>Live fast communication</h3>
-        <p>Easy communication with your team mates trough live chat.</p>
+          <img src="/images/icons/No.svg"></img>
+          <h3>No Photoshop skills required</h3>
+          <p>Very easy to use and you don't need any prior knowledge of Photoshop or any other software skills!</p>
         </div>
+        <div className="col-md-4">
+          <img src="/images/icons/Chat.svg"></img>
+          <h3>Live fast communication</h3>
+          <p>Easy communication with your team mates trough live chat.</p>
         </div>
+      </div>
     </div>);
   }
 }
 
 Index.propTypes = {
-  location: React.PropTypes.object,
-  route: React.PropTypes.object,
+  location: PropTypes.object,
+  route: PropTypes.object,
 };

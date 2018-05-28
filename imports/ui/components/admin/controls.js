@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export class Controls extends React.Component {
   constructor() {
@@ -47,20 +48,20 @@ export class Controls extends React.Component {
     return (<div>
       <div className="chk-all">
         <input type="checkbox" className="mail-checkbox mail-group-checkbox" />
-          <div className="btn-group">
-            <a
-              data-toggle="dropdown"
-              href="#"
-              className="btn mini all"
-              aria-expanded="false">All
-              <i className="fa fa-angle-down "></i>
-            </a>
-            <ul className="dropdown-menu">
-              <li><a href="#"> None</a></li>
-              <li><a href="#"> Read</a></li>
-              <li><a href="#"> Unread</a></li>
-            </ul>
-         </div>
+        <div className="btn-group">
+          <a
+            data-toggle="dropdown"
+            href="#"
+            className="btn mini all"
+            aria-expanded="false">All
+            <i className="fa fa-angle-down "></i>
+          </a>
+          <ul className="dropdown-menu">
+            <li><a href="#"> None</a></li>
+            <li><a href="#"> Read</a></li>
+            <li><a href="#"> Unread</a></li>
+          </ul>
+        </div>
       </div>
       <div className="btn-group hidden-phone">
         <input type="text"
@@ -110,7 +111,7 @@ export class Controls extends React.Component {
 }
 
 Controls.propTypes = {
-  onLoadMore: React.PropTypes.func,
-  onTriggerSearch: React.PropTypes.func,
-  onTriggerStatusSearch: React.PropTypes.func,
+  onLoadMore: PropTypes.func,
+  onTriggerSearch: PropTypes.func,
+  onTriggerStatusSearch: PropTypes.func,
 };
